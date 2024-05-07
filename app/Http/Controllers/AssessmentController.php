@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateAssessmentRequest;
+use App\Models\Answer;
 use App\Models\Assessment;
+use App\Models\User;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
 
@@ -17,7 +19,11 @@ class AssessmentController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $viewButton = '<a href="' . route('dashboard.master.assessments.preview', $row->uuid) . '" class="btn btn-primary btn-sm"><i class="bi bi-eye"></i> Pratinjau</a>';
+                    $usersWithAnswers = User::whereHas('student.answers.question.assessment', function ($query) use ($row) {
+                        $query->where('assessments.id', $row->id);
+                    })->get();
+                    $answersButton = '<a href="' . route('dashboard.master.assessments.answers', $row->uuid) . '" class="btn btn-secondary btn-sm"><i class="bi bi-list-ul"></i> Jawaban <span class="badge bg-transparent">' . $usersWithAnswers->count() . '</span></a>';
+                    $viewButton = '<a href="' . route('public.assessment', ['assessment' => $row->uuid, 'nisn' => 'preview']) . '" class="btn btn-primary btn-sm"><i class="bi bi-eye"></i> Pratinjau</a>';
                     $editButton = '<a href="' . route('dashboard.master.assessments.edit', $row->uuid) . '" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i> Edit</a>';
                     $deleteModal = view('components.modal.delete', [
                         'id' => 'deleteModal-' . $row->uuid,
@@ -25,8 +31,8 @@ class AssessmentController extends Controller
                         'data' => $row->title,
                         'text' => 'Hapus'
                     ])->render();
-                    
-                    return $viewButton . ' ' . $editButton . ' ' . $deleteModal;
+
+                    return $answersButton . ' ' . $viewButton . ' ' . $editButton . ' ' . $deleteModal;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -43,11 +49,6 @@ class AssessmentController extends Controller
         $assessment = Assessment::where('id', $created->id)->first();
 
         return redirect()->route('dashboard.master.assessments.edit', $assessment->uuid);
-    }
-
-    public function show(Assessment $assessment)
-    {
-        //
     }
 
     public function edit(Assessment $assessment)
@@ -78,5 +79,58 @@ class AssessmentController extends Controller
         $assessment->delete();
 
         return redirect()->back()->with('success', 'Data berhasil dihapus');
+    }
+
+    public function answers(Request $request, Assessment $assessment)
+    {
+        if ($request->ajax()) {
+            $usersWithAnswers = User::whereHas('student.answers.question.assessment', function ($query) use ($assessment) {
+                $query->where('assessments.id', $assessment->id);
+            })->get();
+
+            return DataTables::of($usersWithAnswers)
+                ->addIndexColumn()
+                ->addColumn('student_nisn', function ($row) {
+                    return $row->student->nisn;
+                })
+                ->addColumn('action', function ($row) use ($assessment) {
+                    $actionBtn = '
+                    <a href="' . route('dashboard.master.assessments.answers.user', ['assessment' => $assessment->uuid, 'user' => $row->uuid]) . '" class="btn btn-primary btn-sm">
+                        <i class="bi bi-list-ul"></i>
+                        Detail Jawaban
+                    </a> 
+                    ';
+                    return $actionBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('pages.dashboard.master.assessments.answers', compact('assessment'));
+    }
+
+    public function answers_user(Request $request, Assessment $assessment, User $user)
+    {
+        if ($request->ajax()) {
+            $assessmentId = $assessment->id;
+            $answers = Answer::whereHas('question.assessment', function ($query) use ($assessmentId) {
+                $query->where('assessments.id', $assessmentId);
+            })
+                ->where('student_id', $user->student->id)
+                ->get();
+
+            return DataTables::of($answers)
+                ->addIndexColumn()
+                ->addColumn('question', function ($row) {
+                    return $row->question->question;
+                })
+                ->addColumn('answer', function ($row) {
+                    return $row->value;
+                })
+                ->rawColumns(['question'])
+                ->make(true);
+        }
+
+        return view('pages.dashboard.master.assessments.answers-detail', compact('assessment', 'user'));
     }
 }

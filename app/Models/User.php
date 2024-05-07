@@ -64,4 +64,19 @@ class User extends Authenticatable
     {
         return $this->hasOne(Student::class);
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->admin()->exists();
+    }
+
+    public function isManager(): bool
+    {
+        return $this->manager()->exists();
+    }
+
+    public function isStudent(): bool
+    {
+        return $this->student()->exists();
+    }
 }

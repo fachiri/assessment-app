@@ -39,6 +39,8 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['web', 'auth'])->gro
         Route::get('/users/import/example', [UserController::class, 'import_example'])->name('user.import.example');
         Route::get('/users/export/download', [UserController::class, 'export'])->name('user.export');
         Route::resource('/assessments', AssessmentController::class)->names('assessments');
+        Route::get('/assessments/{assessment}/answers', [AssessmentController::class, 'answers'])->name('assessments.answers');
+        Route::get('/assessments/{assessment}/answers/{user}', [AssessmentController::class, 'answers_user'])->name('assessments.answers.user');
         Route::get('/assessments/{assessment}/preview', [AssessmentController::class, 'preview'])->name('assessments.preview');
         Route::get('/assessments/{assessment}/load-file', [FileController::class, 'loadFileCover']);
         Route::post('/questions/{assessment}/store', [QuestionController::class, 'store'])->name('questions.store');

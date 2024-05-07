@@ -21,4 +21,9 @@ class FormatUtils
 
     return view('components.main.null')->render();;
   }
+
+  public static function digits($number, $digit)
+  {
+    return str_pad($number, $digit, '0', STR_PAD_LEFT);
+  }
 }
