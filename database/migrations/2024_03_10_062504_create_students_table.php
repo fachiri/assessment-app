@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('nis', 10)->nullable();
             $table->string('nisn', 10);
-            $table->foreignId('user_id')->onDelete('CASCADE')->constrained('users');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
