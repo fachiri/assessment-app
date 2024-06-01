@@ -15,7 +15,7 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nis' => 'nullable|numeric|digits:10|unique:students,nis,' . $this->user->student->id,
+            'nis' => 'nullable|numeric|digits:5|unique:students,nis,' . $this->user->student->id,
             'nisn' => 'required|numeric|digits:10|unique:students,nisn,' . $this->user->student->id,
             'name' => 'required|string|max:32',
             'gender' => 'nullable|in:' . UserGender::MALE . ',' . UserGender::FEMALE,

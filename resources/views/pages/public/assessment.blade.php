@@ -12,7 +12,7 @@
 		<div class="px-md-5 px-3 py-2">
 			<div class="row">
 				@if (session('success'))
-					<div class="col-12">
+					<div class="col-12 order-0">
 						<div class="alert alert-light-success color-success alert-dismissible fade show">
 							{{ session('success') }}
 							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -20,7 +20,7 @@
 					</div>
 				@endif
 				@if (isset($student) && $student->answers->count() > 0)
-					<div class="col-9">
+					<div class="col-12 col-lg-9 order-2 order-lg-1">
 						<div class="card rounded-4 border-0 shadow">
 							<img src="{{ $assessment->cover ? asset('storage/uploads/covers/' . $assessment->cover) : asset('images/default/assessment.jpg') }}" class="card-img-top" alt="Cover" style="object-fit: cover; height: 10rem; object-position: object-position: 50% 50%;;">
 							<div class="card-body">
@@ -36,7 +36,7 @@
 						</div>
 					</div>
 				@else
-					<div class="col-9">
+					<div class="col-12 col-lg-9 order-2 order-lg-1">
 						<div class="card rounded-4 border-0 shadow">
 							<img src="{{ $assessment->cover ? asset('storage/uploads/covers/' . $assessment->cover) : asset('images/default/assessment.jpg') }}" class="card-img-top" alt="Cover" style="object-fit: cover; height: 10rem; object-position: object-position: 50% 50%;;">
 							<div class="card-body">
@@ -59,7 +59,7 @@
 						</div>
 					</div>
 				@endif
-				<div class="col-3">
+				<div class="col-12 col-lg-3 order-1 order-lg-2">
 					<div class="card rounded-4 border-0 shadow">
 						<div class="card-body">
 							<form action="">

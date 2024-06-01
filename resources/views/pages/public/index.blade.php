@@ -35,18 +35,18 @@
 					<img src="{{ asset('images/default/logo.png') }}" alt="Logo" style="height: 100px;">
 				@endif
 			</div>
-			<div class="text-center" style="max-width: 50rem;">
+			<div class="text-center px-3" style="max-width: 50rem;">
 				<h1 class="fs-1 text-white">Selamat datang di Portal Asesmen Diagnostik Non Kognitif - SMA Negeri 2 Gorontalo</h1>
 			</div>
 			<form style="max-width: 30rem;" action="{{ route('public.assessments') }}">
-				<div class="row">
+				<div class="row px-3">
 					<div class="col">
-						<input class="form-control form-control-lg" id="nisn" name="nisn" type="text" placeholder="Masukkan NISN" required />
+						<input class="form-control" id="nisn" name="nisn" type="text" placeholder="Masukkan NISN" required />
 					</div>
 					<div class="col-auto">
 						<button class="btn btn-warning" style="height: 100%;" type="submit">
 							<i class="bi bi-send me-1"></i>
-							Submit
+							<span class="d-none d-sm-inline">Submit</span>
 						</button>
 					</div>
 				</div>

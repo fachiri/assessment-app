@@ -27,6 +27,7 @@ class QuestionController extends Controller
                 'question', 'type'
             ]) + [
                 'required' => $request->required ? 1 : 0,
+                'other_option' => $request->other_option ? 1 : 0,
                 'assessment_id' => $assessment->id
             ]);
 

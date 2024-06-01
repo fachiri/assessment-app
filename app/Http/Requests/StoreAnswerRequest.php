@@ -17,7 +17,11 @@ class StoreAnswerRequest extends FormRequest
         $rules = [];
 
         foreach ($assessment->questions as $question) {
-            $rules[$question->uuid] = $question->required == 1 ? 'required' : 'nullable';
+            if ($this[$question->uuid] === 'opsi-lain' && $question->required === 1) {
+                $rules["{$question->uuid}_other"] = 'required';
+            } else {
+                $rules[$question->uuid] = $question->required == 1 ? 'required' : 'nullable';
+            }
         }
 
         return $rules;

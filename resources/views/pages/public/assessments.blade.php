@@ -356,7 +356,7 @@
 	<section class="light" style="padding-top: 5rem">
 		<div class="px-md-5 px-3 py-2">
 			<div class="row">
-				<div class="col-9">
+				<div class="col-12 col-lg-9 order-2 order-lg-1">
 					@foreach ($assessments as $assessment)
 						<article class="postcard light blue">
 							<a class="postcard__img_link" href="{{ route('public.assessment', $assessment->uuid) }}">
@@ -379,7 +379,7 @@
 						</article>
 					@endforeach
 				</div>
-				<div class="col-3">
+				<div class="col-12 col-lg-3 order-1 order-lg-2">
 					<div class="card rounded-4 border-0 shadow">
 						<div class="card-body">
               <form action="">

@@ -31,8 +31,8 @@
 							@method('PUT')
 							<input type="file" name="avatar" id="change-profile">
 						</form>
-						<h3 class="mt-3">{{ $user->name }}</h3>
-						<p class="text-small">{{ $user->role }}</p>
+						<h3 class="text-center mt-3">{{ $user->name }}</h3>
+						<p class="text-center text-small">{{ $user->role }}</p>
 					</div>
 				</div>
 			</div>

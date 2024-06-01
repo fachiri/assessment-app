@@ -44,16 +44,19 @@
 			</div>
 		</div>
 
-		@foreach ($assessment->questions as $form)
-			<div class="col-12">
-				<div class="card border">
-					<div class="card-body px-4">
-						<div class="d-flex gap-3">
+		<div class="col-12">
+			<div class="card border">
+				<div class="card-header d-flex justify-content-between align-items-center">
+					<h4 class="card-title pl-1">Daftar Pertanyaan</h4>
+				</div>
+				<div class="card-body px-4">
+					@foreach ($assessment->questions as $form)
+						<div class="d-flex gap-3 mb-3">
 							<div class="form flex-grow-1">
-								<label for="{{ $form->uuid }}" class="form-label">
+								<label for="{{ $form->uuid }}" class="form-label fw-bold">
 									{!! $form->question !!}
 								</label>
-								<x-form.question :form="$form" placeholder="@if($form->required == 1) Wajib diisi @endif" />
+								<x-form.question :form="$form" placeholder="@if ($form->required == 1) Wajib diisi @endif" />
 							</div>
 							<div class="dropdown">
 								<span type="button" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -81,10 +84,10 @@
 								</ul>
 							</div>
 						</div>
-					</div>
+					@endforeach
 				</div>
 			</div>
-		@endforeach
+		</div>
 
 		<div class="col-12 action">
 			<div class="card border">
@@ -114,7 +117,11 @@
 								@endif
 							</div>
 							<div class="col-12 mb-3">
-								<div class="form-check form-switch">
+								<div id="form-other-option" class="d-none form-check form-switch mb-3">
+									<input class="form-check-input" type="checkbox" name="other_option" id="flexSwitchCheckOtherOption" {{ old('other_option') ? 'checked' : '' }}>
+									<label class="form-check-label" for="flexSwitchCheckOtherOption">Opsi Lainnya</label>
+								</div>
+								<div id="form-required" class="form-check form-switch">
 									<input class="form-check-input" type="checkbox" name="required" id="flexSwitchCheckRequired" {{ old('required') ? 'checked' : '' }}>
 									<label class="form-check-label" for="flexSwitchCheckRequired">Wajib Diisi</label>
 								</div>
@@ -180,8 +187,11 @@
 					</div>
 				`
 				$(component).insertAfter('#form-type')
+				$('#form-other-option').removeClass('d-none')
 			} else {
 				$('.option').remove()
+				$('#form-other-option').addClass('d-none')
+				$('#form-other-option input').prop('checked', false);
 			}
 		})
 

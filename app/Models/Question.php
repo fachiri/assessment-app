@@ -17,6 +17,7 @@ class Question extends Model
         'question',
         'type',
         'required',
+        'other_option',
         'assessment_id',
     ];
 

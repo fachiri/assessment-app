@@ -14,6 +14,7 @@ return new class extends Migration
             $table->text('question');
             $table->string('type', 32);
             $table->unsignedTinyInteger('required');
+            $table->unsignedTinyInteger('other_option');
             $table->foreignId('assessment_id')->constrained('assessments')->onDelete('cascade');;
             $table->timestamps();
         });

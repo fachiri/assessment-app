@@ -16,7 +16,7 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nis' => 'nullable|numeric|digits:10|unique:students,nis',
+            'nis' => 'nullable|numeric|digits:5|unique:students,nis',
             'nisn' => 'required|numeric|digits:10|unique:students,nisn',
             'name' => 'required|string|max:32',
             'username' => 'required|regex:/^[a-zA-Z0-9_]+$/|unique:users,username',
